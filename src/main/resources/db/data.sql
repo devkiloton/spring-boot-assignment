@@ -1,13 +1,14 @@
--- Insert data into discount table
-INSERT INTO discount (item_unit, discount_unit, is_discount_constant) VALUES
-('g', '%', TRUE),
-('pc', '$', FALSE);
+INSERT INTO discount (discount_id, discount_unit) VALUES
+(1, '$'),
+(2, '%');
+
 
 
 -- Populate item table
-INSERT INTO item (item_type, created_at, discount_id) VALUES
-('Vegetable', CURRENT_TIMESTAMP, 1),
-('Fruit', CURRENT_TIMESTAMP, 2);
+INSERT INTO item (item_type, item_price, item_unit, created_at, discount_id) VALUES
+('Vegetable', 1.99, 'kg', '2022-04-24 10:00:00', 1),
+('Fruit', 0.99, 'each', '2022-04-24 11:00:00', 2);
+
 
 -- Populate cart table
 INSERT INTO cart (cart_date) VALUES
@@ -20,10 +21,11 @@ INSERT INTO cart_item (cart_id, item_id, quantity) VALUES
 (2, 2, 3);
 
 -- Populate discount_slab table
-INSERT INTO discount_slab (discount_id, units_to_get_discount, discount_amount) VALUES
-(1, 100, 10),
-(1, 200, 20),
-(2, 1, 5),
-(2, 3, 10);
+INSERT INTO discount_slab (discount_slab_id, discount_id, is_constant_slab, units_to_get_discount, discount_amount) VALUES
+(1, 1, true, 100, 10),
+(2, 1, false, 200, 20),
+(3, 2, true, 150, 15),
+(4, 2, false, 250, 25);
+
 
 

@@ -1,27 +1,29 @@
 CREATE TABLE discount (
-    discount_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    item_unit VARCHAR(255),
-    discount_unit VARCHAR(255),
-    is_discount_constant BOOLEAN
+    discount_id BIGINT PRIMARY KEY,
+    discount_unit VARCHAR(255)
 );
+
 
 
 CREATE TABLE discount_slab (
-    discount_slab_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    discount_slab_id BIGINT PRIMARY KEY,
     discount_id BIGINT,
+    is_constant_slab BOOLEAN,
     units_to_get_discount INT,
     discount_amount INT,
-    CONSTRAINT fk_discount_slab_discount FOREIGN KEY (discount_id) REFERENCES discount (discount_id)
+    FOREIGN KEY (discount_id) REFERENCES discount (discount_id)
 );
+
 
 CREATE TABLE item (
     item_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     item_type VARCHAR(255),
+    item_price DOUBLE,
+    item_unit VARCHAR(255),
     created_at TIMESTAMP,
     discount_id BIGINT,
     FOREIGN KEY (discount_id) REFERENCES discount (discount_id)
 );
-
 
 
 
