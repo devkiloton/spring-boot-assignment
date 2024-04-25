@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.grocery.payaut.dto.CartDTO;
 import com.grocery.payaut.model.Cart;
+import com.grocery.payaut.model.CartItem;
 import com.grocery.payaut.service.CartService;
 
 @RestController
@@ -35,8 +37,8 @@ public class CartController {
      * prices and discounts applied
      */
     @PostMapping("/checkout")
-    public ResponseEntity<Cart> postCheckoutOrder(@RequestBody Cart order) {
-        return this.cartService.postCheckoutOrder(order);
+    public ResponseEntity<List<CartItem>> postCheckoutOrder(@RequestBody CartDTO cartDTO) {
+        return this.cartService.postCheckoutCart(cartDTO);
     }
 
 }
