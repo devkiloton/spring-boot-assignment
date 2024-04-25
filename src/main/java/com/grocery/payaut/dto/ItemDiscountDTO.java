@@ -1,7 +1,8 @@
 package com.grocery.payaut.dto;
 
-import java.util.Set;
+import java.util.List;
 
+import com.grocery.payaut.enumerator.DiscountUnits;
 import com.grocery.payaut.model.DiscountSlab;
 
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemDiscountDTO {
     private Long discountId;
-    private String discountUnit;
+    private DiscountUnits discountUnit;
     private Boolean isDiscountConstant;
-    private Set<DiscountSlab> discountSlabs;
+    private List<DiscountSlab> discountSlabs;
 }

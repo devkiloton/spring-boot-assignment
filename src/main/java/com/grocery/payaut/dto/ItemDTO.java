@@ -1,5 +1,7 @@
 package com.grocery.payaut.dto;
 
+import com.grocery.payaut.enumerator.ItemTypes;
+import com.grocery.payaut.enumerator.MeasurementUnits;
 import com.grocery.payaut.model.Discount;
 
 import lombok.AllArgsConstructor;
@@ -13,8 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemDTO {
     private Long itemId;
-    private String type;
+    private ItemTypes type;
     private double price;
-    private String unit;
+    private MeasurementUnits unit;
     private Discount discount;
 }
