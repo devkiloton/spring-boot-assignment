@@ -1,11 +1,8 @@
 package com.grocery.payaut.model;
 
 import java.util.List;
-import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.grocery.payaut.enumerator.DiscountUnits;
 
 import jakarta.persistence.*;
