@@ -22,4 +22,8 @@ public class CartItem {
     private Cart cart;
     @Column
     private Long itemId;
+    @Column(name = "total_price", nullable = true)
+    private double totalPrice;
+    @Column(name = "total_discount", nullable = true)
+    private double totalDiscount;
 }

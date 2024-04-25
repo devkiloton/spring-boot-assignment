@@ -1,12 +1,11 @@
 package com.grocery.payaut.model;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.grocery.payaut.enumerator.ItemTypes;
+import com.grocery.payaut.enumerator.MeasurementUnits;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,12 +19,14 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_type")
-    private String type;
+    private ItemTypes type;
     @Column(name = "item_price")
     private double price;
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_unit")
-    private String unit;
+    private MeasurementUnits unit;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @OneToOne(fetch = FetchType.LAZY)

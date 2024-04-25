@@ -1,6 +1,7 @@
-INSERT INTO discount (discount_id, discount_unit) VALUES
-(1, '$'),
-(2, '%');
+INSERT INTO discount (discount_unit, item_id) VALUES
+('PIECE', 1),
+('PERCENTAGE', 2);
+
 
 
 
@@ -16,9 +17,10 @@ INSERT INTO cart (cart_date) VALUES
 ('2024-04-24 13:00:00');
 
 -- Populate cart_item table
-INSERT INTO cart_item (cart_id, item_id, quantity) VALUES
-(1, 1, 5),
-(2, 2, 3);
+INSERT INTO cart_item (cart_item_id, quantity, cart_id, item_id, total_price, total_discount) VALUES
+(1, 2, 101, 201, 15.0, 3.0),
+(2, 3, 102, 202, 22.5, 4.5),
+(3, 1, 103, 203, 10.0, 2.0);
 
 -- Populate discount_slab table
 INSERT INTO discount_slab (discount_slab_id, discount_id, is_constant_slab, units_to_get_discount, discount_amount) VALUES

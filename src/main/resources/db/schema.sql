@@ -1,6 +1,8 @@
 CREATE TABLE discount (
-    discount_id BIGINT PRIMARY KEY,
-    discount_unit VARCHAR(255)
+    discount_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    discount_unit VARCHAR(255),
+    item_id BIGINT,
+    FOREIGN KEY (item_id) REFERENCES item (item_id)
 );
 
 
@@ -33,13 +35,16 @@ CREATE TABLE cart (
 );
 
 CREATE TABLE cart_item (
-    cart_item_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cart_item_id BIGINT PRIMARY KEY,
     quantity INT,
     cart_id BIGINT,
     item_id BIGINT,
+    total_price DOUBLE,
+    total_discount DOUBLE,
     FOREIGN KEY (cart_id) REFERENCES cart (cart_id),
     FOREIGN KEY (item_id) REFERENCES item (item_id)
 );
+
 
 
 
