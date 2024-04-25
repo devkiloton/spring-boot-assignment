@@ -24,7 +24,8 @@ public class DiscountSlab {
     @JoinColumn(name = "discount_id")
     @JsonIgnore
     private Discount discount;
-
+    @Column(name = "is_constant_slab")
+    private Boolean isConstantSlab;
     @Column(name = "units_to_get_discount")
     private int unitsToGetDiscount;
     @Column(name = "discount_amount")

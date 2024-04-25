@@ -3,6 +3,9 @@ package com.grocery.payaut.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -19,7 +22,11 @@ public class Item {
     private Long itemId;
     @Column(name = "item_type")
     private String type;
-    @Column(name = "created_at")
+    @Column(name = "item_price")
+    private double price;
+    @Column(name = "item_unit")
+    private String unit;
+    @CreationTimestamp
     private LocalDateTime createdAt;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
