@@ -21,11 +21,19 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    /**
+     * Get all carts checked out in the database (just to prove that the database
+     * has initial data)
+     */
     @GetMapping("/carts")
     public List<Cart> getAllOrders() {
         return this.cartService.getAllCarts();
     }
 
+    /**
+     * Checkout a cart, apply discount rules and return values with final
+     * prices and discounts applied
+     */
     @PostMapping("/checkout")
     public ResponseEntity<Cart> postCheckoutOrder(@RequestBody Cart order) {
         return this.cartService.postCheckoutOrder(order);
