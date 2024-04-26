@@ -14,7 +14,6 @@ import com.grocery.payaut.dto.CartDTO;
 import com.grocery.payaut.dto.CheckoutDTO;
 import com.grocery.payaut.dto.ReceiptDTO;
 import com.grocery.payaut.model.Cart;
-import com.grocery.payaut.model.CartItem;
 import com.grocery.payaut.service.CartService;
 
 @RestController
@@ -42,6 +41,9 @@ public class CartController {
         return this.cartService.postCheckoutCart(cartDTO);
     }
 
+    /**
+     * Generate a receipt for a cart
+     */
     @PostMapping("/receipt")
     public ResponseEntity<List<ReceiptDTO>> postReceiptCreation(@RequestBody CartDTO cartDTO) {
         return this.cartService.postReceiptCreation(cartDTO);
