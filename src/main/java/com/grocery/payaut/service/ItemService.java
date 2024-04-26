@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.grocery.payaut.dto.ItemDTO;
-import com.grocery.payaut.dto.ItemDiscountDTO;
-import com.grocery.payaut.dto.ItemDiscountSlabDTO;
+import com.grocery.payaut.dto.DiscountDTO;
+import com.grocery.payaut.dto.DiscountSlabDTO;
 import com.grocery.payaut.model.Discount;
 import com.grocery.payaut.model.DiscountSlab;
 import com.grocery.payaut.model.Item;
@@ -54,7 +54,7 @@ public class ItemService {
         return ResponseEntity.ok(savedItem);
     }
 
-    public ResponseEntity<Discount> upsertItemDiscount(ItemDiscountDTO itemdDiscountDTO) {
+    public ResponseEntity<Discount> upsertItemDiscount(DiscountDTO itemdDiscountDTO) {
         if (itemdDiscountDTO.getDiscountId() != null) {
             Optional<Discount> discountOptional = discountRepository.findById(itemdDiscountDTO.getDiscountId());
             Discount existingDiscount = discountOptional.get();
@@ -72,7 +72,7 @@ public class ItemService {
         return ResponseEntity.ok(savedDiscount);
     }
 
-    public ResponseEntity<DiscountSlab> updateDiscountSlab(ItemDiscountSlabDTO itemDiscountSlabDTO) {
+    public ResponseEntity<DiscountSlab> updateDiscountSlab(DiscountSlabDTO itemDiscountSlabDTO) {
         Optional<DiscountSlab> discountSlabOptional = discountSlabRepository
                 .findById(itemDiscountSlabDTO.getDiscountSlabId());
         DiscountSlab existingDiscountSlab = discountSlabOptional.get();

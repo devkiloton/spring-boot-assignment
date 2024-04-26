@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDiscountSlabDTO {
+public class DiscountSlabDTO {
     private Long discountSlabId;
     private int unitsToGetDiscount;
     private int discountAmount;

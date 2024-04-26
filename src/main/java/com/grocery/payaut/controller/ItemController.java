@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.payaut.dto.ItemDTO;
-import com.grocery.payaut.dto.ItemDiscountDTO;
-import com.grocery.payaut.dto.ItemDiscountSlabDTO;
+import com.grocery.payaut.dto.DiscountDTO;
+import com.grocery.payaut.dto.DiscountSlabDTO;
 import com.grocery.payaut.model.Discount;
 import com.grocery.payaut.model.DiscountSlab;
 import com.grocery.payaut.model.Item;
@@ -47,7 +47,7 @@ public class ItemController {
      * Add or update an item discount for an item in the database
      */
     @PatchMapping("/change-item-discount")
-    public ResponseEntity<Discount> upsertItemDiscount(@RequestBody ItemDiscountDTO itemDiscountDTO) {
+    public ResponseEntity<Discount> upsertItemDiscount(@RequestBody DiscountDTO itemDiscountDTO) {
         return this.itemService.upsertItemDiscount(itemDiscountDTO);
     }
 
@@ -55,7 +55,7 @@ public class ItemController {
      * Add or update an item discount slab for a discount in the database
      */
     @PatchMapping("/change-discount-rule")
-    public ResponseEntity<DiscountSlab> updateDiscountSlab(@RequestBody ItemDiscountSlabDTO itemDiscountSlabDTO) {
+    public ResponseEntity<DiscountSlab> updateDiscountSlab(@RequestBody DiscountSlabDTO itemDiscountSlabDTO) {
         return this.itemService.updateDiscountSlab(itemDiscountSlabDTO);
     }
 

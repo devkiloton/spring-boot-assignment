@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDiscountDTO {
+public class DiscountDTO {
     private Long discountId;
     private DiscountUnits discountUnit;
     private Boolean isConstantSlab;
