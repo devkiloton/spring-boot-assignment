@@ -3,8 +3,10 @@ package com.grocery.payaut.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.grocery.payaut.dto.CartDTO;
 import com.grocery.payaut.dto.CheckoutDTO;
@@ -84,7 +86,7 @@ public class CartService {
         final long breadAge = ItemUtils.resolveBreadAge(item);
 
         if (breadAge > 6) {
-            throw new IllegalArgumentException("Bread is expired");
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Bread is too old to be sold! 🤮");
         }
         if (breadAge >= 3) {
             cartItem.setQuantity(quantity + 1);
@@ -112,11 +114,14 @@ public class CartService {
 
     private CheckoutDTO applyConstantSlab(CartItem cartItem, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
-        final double finalDiscount = (int) Math.floor(quantity /
-                discountSlab.getUnitsToGetDiscount())
-                * discountSlab.getDiscountAmount();
-        cartItem.setTotalPrice(price * quantity);
-        cartItem.setTotalDiscount(finalDiscount);
+        if (discountSlab != null) {
+
+            final double finalDiscount = (int) Math.floor(quantity /
+                    discountSlab.getUnitsToGetDiscount())
+                    * discountSlab.getDiscountAmount();
+            cartItem.setTotalPrice(price * quantity);
+            cartItem.setTotalDiscount(finalDiscount);
+        }
         final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
         return checkoutDTO;
     }
