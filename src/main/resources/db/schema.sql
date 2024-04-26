@@ -30,6 +30,7 @@ CREATE TABLE discount_slab (
 CREATE TABLE item (
     item_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     item_type VARCHAR(255),
+    item_name VARCHAR(255),
     item_price DOUBLE,
     item_unit VARCHAR(255),
     created_at TIMESTAMP,
