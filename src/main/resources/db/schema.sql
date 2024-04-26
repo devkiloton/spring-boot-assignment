@@ -15,13 +15,13 @@ CREATE TABLE cart_item (
 
 CREATE TABLE discount (
     discount_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    is_constant_slab BOOLEAN,
     discount_unit VARCHAR(255)
 );
 
 CREATE TABLE discount_slab (
     discount_slab_id BIGINT PRIMARY KEY,
     discount_id BIGINT,
-    is_constant_slab BOOLEAN,
     units_to_get_discount INT,
     discount_amount INT,
     FOREIGN KEY (discount_id) REFERENCES discount (discount_id)
