@@ -17,6 +17,8 @@ public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long discountId;
+    @Column(name = "is_constant_slab")
+    private Boolean isConstantSlab;
     // Discount unit, e.g. $, %, pc etc.
     @Enumerated(EnumType.STRING)
     @Column(name = "discount_unit")
