@@ -8,13 +8,17 @@ import com.grocery.payaut.enumerator.ItemTypes;
 import com.grocery.payaut.enumerator.MeasurementUnits;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "item")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

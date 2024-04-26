@@ -6,13 +6,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grocery.payaut.enumerator.DiscountUnits;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "discount")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
