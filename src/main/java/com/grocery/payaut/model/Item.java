@@ -21,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itemId;
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type")

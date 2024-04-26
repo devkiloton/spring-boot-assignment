@@ -33,7 +33,7 @@ public class CartService {
 
     public ResponseEntity<List<CheckoutDTO>> postCheckoutCart(CartDTO cartDTO) {
         final List<CheckoutDTO> cartItems = cartDTO.getCartItems().stream().map(cartItem -> {
-            final Long itemId = cartItem.getCartItemId();
+            final Long itemId = cartItem.getItemId();
             final Item item = itemRepository.findById(itemId).get();
             final Discount discount = item.getDiscount();
             final int quantity = cartItem.getQuantity();

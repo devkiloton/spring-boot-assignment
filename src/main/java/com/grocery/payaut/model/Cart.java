@@ -17,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Cart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long cartId;
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> cartItems;
