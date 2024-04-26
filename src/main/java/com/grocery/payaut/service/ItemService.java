@@ -61,12 +61,14 @@ public class ItemService {
             Discount existingDiscount = discountOptional.get();
             existingDiscount.setDiscountSlabs(itemdDiscountDTO.getDiscountSlabs());
             existingDiscount.setDiscountUnit(itemdDiscountDTO.getDiscountUnit());
+            existingDiscount.setIsConstantSlab(itemdDiscountDTO.getIsConstantSlab());
             Discount savedDiscount = discountRepository.save(existingDiscount);
             return ResponseEntity.ok(savedDiscount);
         }
         Discount newDiscount = new Discount();
         newDiscount.setDiscountSlabs(itemdDiscountDTO.getDiscountSlabs());
         newDiscount.setDiscountUnit(itemdDiscountDTO.getDiscountUnit());
+        newDiscount.setIsConstantSlab(itemdDiscountDTO.getIsConstantSlab());
         Discount savedDiscount = discountRepository.save(newDiscount);
         return ResponseEntity.ok(savedDiscount);
     }
@@ -75,7 +77,6 @@ public class ItemService {
         Optional<DiscountSlab> discountSlabOptional = discountSlabRepository
                 .findById(itemDiscountSlabDTO.getDiscountSlabId());
         DiscountSlab existingDiscountSlab = discountSlabOptional.get();
-        existingDiscountSlab.setIsConstantSlab(itemDiscountSlabDTO.isConstantSlab());
         existingDiscountSlab.setUnitsToGetDiscount(itemDiscountSlabDTO.getUnitsToGetDiscount());
         existingDiscountSlab.setDiscountAmount(itemDiscountSlabDTO.getDiscountAmount());
         DiscountSlab savedDiscountSlab = discountSlabRepository.save(existingDiscountSlab);
