@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.payaut.dto.CartDTO;
 import com.grocery.payaut.dto.CheckoutDTO;
+import com.grocery.payaut.dto.ReceiptDTO;
 import com.grocery.payaut.model.Cart;
 import com.grocery.payaut.model.CartItem;
 import com.grocery.payaut.service.CartService;
@@ -33,12 +34,17 @@ public class CartController {
     }
 
     /**
-     * Checkout a cart, apply discount rules and return values with final
-     * prices and discounts applied
+     * Checkout a cart, apply discount rules and return necessary details to
+     * generate a receipt
      */
     @PostMapping("/checkout")
     public ResponseEntity<List<CheckoutDTO>> postCheckoutOrder(@RequestBody CartDTO cartDTO) {
         return this.cartService.postCheckoutCart(cartDTO);
+    }
+
+    @PostMapping("/receipt")
+    public ResponseEntity<List<ReceiptDTO>> postReceiptCreation(@RequestBody CartDTO cartDTO) {
+        return this.cartService.postReceiptCreation(cartDTO);
     }
 
 }
