@@ -29,8 +29,8 @@ public class ItemService {
     @Autowired
     private IDiscountSlabRepository discountSlabRepository;
 
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
+    public ResponseEntity<List<Item>> getAllItems() {
+        return ResponseEntity.ok(itemRepository.findAll());
     }
 
     public ResponseEntity<Item> upsertItem(ItemDTO itemDTO) {

@@ -26,8 +26,8 @@ public class CartService {
     @Autowired
     private IItemRepository itemRepository;
 
-    public List<Cart> getAllCarts() {
-        return cartRepository.findAll();
+    public ResponseEntity<List<Cart>> getAllCarts() {
+        return ResponseEntity.ok(cartRepository.findAll());
     }
 
     public ResponseEntity<List<CartItem>> postCheckoutCart(CartDTO cartDTO) {

@@ -27,7 +27,7 @@ public class CartController {
      * has initial data)
      */
     @GetMapping("/carts")
-    public List<Cart> getAllOrders() {
+    public ResponseEntity<List<Cart>> getAllOrders() {
         return this.cartService.getAllCarts();
     }
 

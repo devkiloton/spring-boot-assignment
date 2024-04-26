@@ -31,7 +31,7 @@ public class ItemController {
      * @return {@link List}
      */
     @GetMapping("/items")
-    public List<Item> getItems() {
+    public ResponseEntity<List<Item>> getItems() {
         return this.itemService.getAllItems();
     }
 
