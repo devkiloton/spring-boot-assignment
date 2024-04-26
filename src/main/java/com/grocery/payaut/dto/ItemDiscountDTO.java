@@ -17,6 +17,6 @@ import lombok.Setter;
 public class ItemDiscountDTO {
     private Long discountId;
     private DiscountUnits discountUnit;
-    private Boolean isDiscountConstant;
+    private Boolean isConstantSlab;
     private List<DiscountSlab> discountSlabs;
 }
