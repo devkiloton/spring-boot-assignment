@@ -16,5 +16,5 @@ import lombok.Setter;
 public class CartDTO {
     private Long cartId;
     private List<CartItem> cartItems;
-    private LocalDateTime cartDate; // Assuming LocalDateTime for cart date
+    private LocalDateTime cartDate;
 }

@@ -22,5 +22,5 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<CartItem> cartItems;
     @Column(name = "cart_date")
-    private LocalDateTime cartDate; // Assuming LocalDateTime for cart date
+    private LocalDateTime cartDate;
 }

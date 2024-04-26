@@ -16,7 +16,6 @@ import com.grocery.payaut.model.CartItem;
 import com.grocery.payaut.service.CartService;
 
 @RestController
-// change later to be in the index
 @RequestMapping("/api/v1")
 public class CartController {
 

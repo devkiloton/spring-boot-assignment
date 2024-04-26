@@ -92,7 +92,6 @@ public class CartService {
 
     private CartItem applyConstantSlab(CartItem cartItem, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
-        // split that in finals later
         final double finalDiscount = (int) Math.floor(quantity /
                 discountSlab.getUnitsToGetDiscount())
                 * discountSlab.getDiscountAmount();

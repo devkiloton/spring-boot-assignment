@@ -35,5 +35,5 @@ public class Item {
     private LocalDateTime createdAt;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
-    private Discount discount; // Nullable for items without discount
+    private Discount discount; // Nullable for `Items` without `Discount`
 }
