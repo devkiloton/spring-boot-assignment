@@ -50,7 +50,6 @@ public class ItemService {
         newItem.setUnit(itemDTO.getUnit());
         newItem.setPrice(itemDTO.getPrice());
         newItem.setDiscount(itemDTO.getDiscount());
-        System.out.println("newItem: " + itemDTO.getDiscount());
         Item savedItem = itemRepository.save(newItem);
         return ResponseEntity.ok(savedItem);
     }
