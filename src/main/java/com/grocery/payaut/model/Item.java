@@ -26,6 +26,8 @@ public class Item {
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type")
     private ItemTypes type;
+    @Column(name = "item_name")
+    private String name;
     @Column(name = "item_price")
     private double price;
     @Enumerated(EnumType.STRING)
