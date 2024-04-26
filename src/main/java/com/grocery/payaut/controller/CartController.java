@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grocery.payaut.dto.CartDTO;
+import com.grocery.payaut.dto.CheckoutDTO;
 import com.grocery.payaut.model.Cart;
 import com.grocery.payaut.model.CartItem;
 import com.grocery.payaut.service.CartService;
@@ -36,7 +37,7 @@ public class CartController {
      * prices and discounts applied
      */
     @PostMapping("/checkout")
-    public ResponseEntity<List<CartItem>> postCheckoutOrder(@RequestBody CartDTO cartDTO) {
+    public ResponseEntity<List<CheckoutDTO>> postCheckoutOrder(@RequestBody CartDTO cartDTO) {
         return this.cartService.postCheckoutCart(cartDTO);
     }
 

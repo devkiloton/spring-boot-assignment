@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.grocery.payaut.dto.CartDTO;
+import com.grocery.payaut.dto.CheckoutDTO;
 import com.grocery.payaut.model.Cart;
 import com.grocery.payaut.model.CartItem;
 import com.grocery.payaut.model.Discount;
@@ -30,8 +31,8 @@ public class CartService {
         return ResponseEntity.ok(cartRepository.findAll());
     }
 
-    public ResponseEntity<List<CartItem>> postCheckoutCart(CartDTO cartDTO) {
-        final List<CartItem> cartItems = cartDTO.getCartItems().stream().map(cartItem -> {
+    public ResponseEntity<List<CheckoutDTO>> postCheckoutCart(CartDTO cartDTO) {
+        final List<CheckoutDTO> cartItems = cartDTO.getCartItems().stream().map(cartItem -> {
             final Long itemId = cartItem.getCartItemId();
             final Item item = itemRepository.findById(itemId).get();
             final Discount discount = item.getDiscount();
@@ -41,7 +42,8 @@ public class CartService {
             cartItem.setTotalDiscount(0);
 
             if (discount == null) {
-                return cartItem;
+                final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
+                return checkoutDTO;
             }
 
             final DiscountSlab discountSlab = discount.getDiscountSlabs().stream()
@@ -56,13 +58,14 @@ public class CartService {
                 case VEGETABLES:
                     return applyItemDiscountRule(cartItem, item, price, quantity, discountSlab);
                 default:
-                    return cartItem;
+                    final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
+                    return checkoutDTO;
             }
         }).toList();
         return ResponseEntity.ok(cartItems);
     }
 
-    private CartItem applyBreadRule(CartItem cartItem, Item item, double price, int quantity) {
+    private CheckoutDTO applyBreadRule(CartItem cartItem, Item item, double price, int quantity) {
         final long breadAge = item.getCreatedAt().until(LocalDateTime.now(), ChronoUnit.DAYS);
 
         if (breadAge > 6) {
@@ -78,26 +81,29 @@ public class CartService {
             cartItem.setTotalDiscount(price * 2);
             cartItem.setTotalPrice(price * (quantity + 2));
         }
-        return cartItem;
+        final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
+        return checkoutDTO;
     }
 
-    private CartItem applyItemDiscountRule(CartItem cartItem, Item item, double price, int quantity,
+    private CheckoutDTO applyItemDiscountRule(CartItem cartItem, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
         final double finalValue = quantity * price
                 - (quantity * price * discountSlab.getDiscountAmount() / 100);
         cartItem.setTotalPrice(quantity * price);
         cartItem.setTotalDiscount((price * quantity) - finalValue);
-        return cartItem;
+        final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
+        return checkoutDTO;
     }
 
-    private CartItem applyConstantSlab(CartItem cartItem, Item item, double price, int quantity,
+    private CheckoutDTO applyConstantSlab(CartItem cartItem, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
         final double finalDiscount = (int) Math.floor(quantity /
                 discountSlab.getUnitsToGetDiscount())
                 * discountSlab.getDiscountAmount();
         cartItem.setTotalPrice(price * quantity);
         cartItem.setTotalDiscount(finalDiscount);
-        return cartItem;
+        final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
+        return checkoutDTO;
     }
 
 }
