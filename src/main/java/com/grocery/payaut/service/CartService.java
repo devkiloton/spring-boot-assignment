@@ -1,7 +1,5 @@
 package com.grocery.payaut.service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.grocery.payaut.dto.CartDTO;
 import com.grocery.payaut.dto.CheckoutDTO;
+import com.grocery.payaut.dto.ReceiptDTO;
 import com.grocery.payaut.model.Cart;
 import com.grocery.payaut.model.CartItem;
 import com.grocery.payaut.model.Discount;
@@ -17,6 +16,7 @@ import com.grocery.payaut.model.DiscountSlab;
 import com.grocery.payaut.model.Item;
 import com.grocery.payaut.repository.ICartRepository;
 import com.grocery.payaut.repository.IItemRepository;
+import com.grocery.payaut.util.ItemUtils;
 
 @Service
 public class CartService {
@@ -65,8 +65,23 @@ public class CartService {
         return ResponseEntity.ok(cartItems);
     }
 
+    public ResponseEntity<List<ReceiptDTO>> postReceiptCreation(CartDTO cartDTO) {
+        final List<ReceiptDTO> receiptData = postCheckoutCart(cartDTO).getBody().stream().map(checkoutDTO -> {
+            final ReceiptDTO receiptDTO = new ReceiptDTO();
+            receiptDTO.setUnit(checkoutDTO.getItem().getUnit());
+            receiptDTO.setQuantity(checkoutDTO.getQuantity());
+            receiptDTO.setFinalPrice(checkoutDTO.getTotalPrice() - checkoutDTO.getTotalDiscount());
+            receiptDTO.setBasePrice(checkoutDTO.getItem().getPrice());
+            receiptDTO.setBaseQuantity((int) checkoutDTO.getItem().getPrice());
+            receiptDTO.setItemName(ItemUtils.resolveItemName(checkoutDTO.getItem()));
+            return receiptDTO;
+        }).toList();
+
+        return ResponseEntity.ok(receiptData);
+    }
+
     private CheckoutDTO applyBreadRule(CartItem cartItem, Item item, double price, int quantity) {
-        final long breadAge = item.getCreatedAt().until(LocalDateTime.now(), ChronoUnit.DAYS);
+        final long breadAge = ItemUtils.resolveBreadAge(item);
 
         if (breadAge > 6) {
             throw new IllegalArgumentException("Bread is expired");
