@@ -1,4 +1,4 @@
-package com.grocery.payaut;
+package com.grocery.payaut.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

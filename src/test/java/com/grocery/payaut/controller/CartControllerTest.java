@@ -1,4 +1,4 @@
-package com.grocery.payaut;
+package com.grocery.payaut.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
