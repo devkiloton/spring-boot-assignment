@@ -14,12 +14,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.util.Collections;
 
-import com.grocery.payaut.controller.CartController;
 import com.grocery.payaut.service.CartService;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +32,7 @@ public class CartControllerTest {
 
     @BeforeEach
     public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(cartController).alwaysDo(print()).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(cartController).build();
     }
 
     @Test
