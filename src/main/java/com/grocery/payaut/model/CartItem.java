@@ -2,6 +2,7 @@ package com.grocery.payaut.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +27,10 @@ public class CartItem {
     private Cart cart;
     @Column
     private Long itemId;
+    @Nullable
     @Column(name = "total_price", nullable = true)
     private double totalPrice;
     @Column(name = "total_discount", nullable = true)
+    @Nullable
     private double totalDiscount;
 }
