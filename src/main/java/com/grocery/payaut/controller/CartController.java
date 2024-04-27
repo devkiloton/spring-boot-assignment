@@ -17,7 +17,7 @@ import com.grocery.payaut.model.Cart;
 import com.grocery.payaut.service.CartService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("carts")
 public class CartController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class CartController {
      * Get all carts checked out in the database (just to prove that the database
      * has initial data)
      */
-    @GetMapping("/carts")
+    @GetMapping("/all")
     public ResponseEntity<List<Cart>> getAllOrders() {
         return this.cartService.getAllCarts();
     }

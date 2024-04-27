@@ -19,7 +19,7 @@ import com.grocery.payaut.model.Item;
 import com.grocery.payaut.service.ItemService;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("items")
 public class ItemController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class ItemController {
      * 
      * @return {@link List}
      */
-    @GetMapping("/items")
+    @GetMapping("/all")
     public ResponseEntity<List<Item>> getItems() {
         return this.itemService.getAllItems();
     }
