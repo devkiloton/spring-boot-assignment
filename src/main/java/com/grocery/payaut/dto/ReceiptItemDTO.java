@@ -11,13 +11,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReceiptDTO {
+public class ReceiptItemDTO {
     private String itemName;
     private Double finalPrice;
     private Integer quantity;
     private MeasurementUnits unit;
+    private Double totalPrice;
+    private Double totalDiscount;
 
     // Fields for the user comparison with the final price
     private Double basePrice;
-    private Integer baseQuantity;
 }

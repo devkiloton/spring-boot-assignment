@@ -14,12 +14,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDTO {
+public class ItemCreationDTO {
     @NotNull
-    private Long itemId;
     private ItemTypes type;
-    private String name;
+    @NotNull
     private Double price;
+    @NotNull
     private MeasurementUnits unit;
+    @NotNull
+    private String name;
     private Discount discount;
 }

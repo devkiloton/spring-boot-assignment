@@ -17,10 +17,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Validated
-public class DiscountDTO {
+public class DiscountCreationDTO {
     @NotNull
-    private Long discountId;
+    private Long itemId;
+    @NotNull
+
     private DiscountUnits discountUnit;
+    @NotNull
+
     private Boolean isConstantSlab;
+    @NotNull
+
     private List<DiscountSlabDTO> discountSlabs;
 }
