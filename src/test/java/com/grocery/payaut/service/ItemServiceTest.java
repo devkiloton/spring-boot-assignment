@@ -14,7 +14,6 @@ import com.grocery.payaut.enumerator.ItemTypes;
 import com.grocery.payaut.enumerator.MeasurementUnits;
 import com.grocery.payaut.model.Item;
 import com.grocery.payaut.repository.IItemRepository;
-import com.grocery.payaut.service.ItemService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
