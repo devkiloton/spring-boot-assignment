@@ -69,6 +69,11 @@ public class ReceiptService {
                             .filter(slab -> slab.getUnitsToGetDiscount() <= quantity).reduce((first, second) -> second)
                             .orElse(null);
 
+                    if (discountSlab == null) {
+                        throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED,
+                                "No discount slab found for the quantity");
+                    }
+
                     if (discount.getIsConstantSlab()) {
                         return applyConstantSlab(receiptItemDTO, possibleItem, price, quantity, discountSlab);
                     }
