@@ -1,37 +1,21 @@
--- Insert data into the cart table
-INSERT INTO cart (cart_date) VALUES 
-('2024-04-25 10:00:00'), ('2024-04-24 15:30:00'), ('2024-04-24 15:00:00');
-
--- Insert data into the cart_item table
-INSERT INTO cart_item (quantity, cart_id, item_id, total_price, total_discount) VALUES
-(500, 1, 2, 6.0, 1.0),
-(7, 2, 1, 3, 1.0),
-(3, 3, 3, 3.0, 1.0);
-
-
-INSERT INTO discount (discount_unit, is_constant_slab) VALUES
+insert into discount (discount_unit, is_constant_slab) values 
 ('PERCENTAGE', false),
 ('MONEY', true),
 ('MONEY', false),
 ('MONEY', true),
 ('MONEY', true);
 
+insert into discount_slab (discount_id,discount_amount,units_to_get_discount) values 
+(1,10,500),
+(1, 7, 100),
+(1,5,1),
+(2,1,6),
+(4,1.5,6),
+(5,2,6);
 
--- Insert data into the discount_slab table
-INSERT INTO discount_slab (discount_slab_id, discount_id, units_to_get_discount, discount_amount) VALUES 
-(1, 1, 500, 10),
-(2, 1, 100, 7),
-(3, 1, 1, 5),
-(4, 2, 6, 1),
-(5, 4, 6, 1.5),
-(6, 5, 6, 2);
-
-
--- Populate item table
-INSERT INTO item (item_type, item_name, item_price, item_unit, created_at, discount_id) VALUES
-('VEGETABLES', 'Vegetables', 0.01, 'GRAM', '2024-04-24 10:00:00', 1),
-('BEERS', 'Dutch Beer', 0.5, 'PIECE', '2024-04-24 11:00:00', 2),
-('BREADS', 'Bread', 1.00, 'PIECE', '2024-04-19 11:00:00', 3),
-('BEERS', 'Belgium Beer', 0.75, 'PIECE', '2024-04-24 11:00:00', 4),
-('BEERS', 'German Beer', 1, 'PIECE', '2024-04-24 11:00:00', 5);
-
+insert into item (item_price, created_at, discount_id, item_name, item_type, item_unit) values
+(0.01, '2024-04-24 10:00:00', 1, 'Vegetables', 'VEGETABLES', 'GRAM'),
+(0.5, '2024-04-24 11:00:00', 2, 'Dutch Beer', 'BEERS', 'PIECE'),
+(1.0, '2024-04-19 11:00:00', 3, 'Bread', 'BREADS', 'PIECE'),
+(0.75, '2024-04-24 11:00:00', 4, 'Belgium Beer', 'BEERS', 'PIECE'),
+(1.0, '2024-04-24 11:00:00', 5, 'German Beer', 'BEERS', 'PIECE');
