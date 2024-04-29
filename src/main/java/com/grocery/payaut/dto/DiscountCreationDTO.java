@@ -2,8 +2,6 @@ package com.grocery.payaut.dto;
 
 import java.util.List;
 
-import org.springframework.validation.annotation.Validated;
-
 import com.grocery.payaut.enumerator.DiscountUnits;
 
 import jakarta.validation.constraints.NotNull;
