@@ -33,10 +33,21 @@ public class ItemService {
     @Autowired
     private ICustomMappers mappers;
 
+    /**
+     * Returns all items from the database
+     * 
+     * @return {@link List} of {@link Item}
+     */
     public ResponseEntity<List<Item>> getAllItems() {
         return ResponseEntity.ok(this.itemRepository.findAll());
     }
 
+    /**
+     * Updates an item in the database
+     * 
+     * @param itemDTO - Object that contains the item's information
+     * @return an Updated {@link Item}
+     */
     public ResponseEntity<Item> updateItem(ItemDTO itemDTO) {
         Item item = this.itemRepository.findById(itemDTO.getItemId()).get();
         this.mappers.dtoToItem(itemDTO, item);
@@ -48,6 +59,7 @@ public class ItemService {
      * Creates a new item to the database, so users can buy it
      * 
      * @param itemCreationDTO - Object that contains the item's information
+     * @return a new {@link Item}
      */
     public ResponseEntity<Item> createItem(ItemCreationDTO itemCreationDTO) {
         Item newItem = new Item();
@@ -65,6 +77,12 @@ public class ItemService {
         return ResponseEntity.ok(savedItem);
     }
 
+    /**
+     * Updates an item discount
+     * 
+     * @param itemdDiscountDTO
+     * @return an Updated {@link Discount}
+     */
     public ResponseEntity<Discount> updateItemDiscount(DiscountDTO itemdDiscountDTO) {
         Discount discount = this.discountRepository.findById(itemdDiscountDTO.getDiscountId()).get();
 
@@ -73,6 +91,12 @@ public class ItemService {
         return ResponseEntity.ok(savedDiscount);
     }
 
+    /**
+     * Creates a new discount for an item
+     * 
+     * @param discountCreationDTO
+     * @return a new {@link Discount}
+     */
     public ResponseEntity<Discount> createItemDiscount(DiscountCreationDTO discountCreationDTO) {
         Discount newDiscount = new Discount();
 
@@ -104,7 +128,7 @@ public class ItemService {
      * @param itemDiscountSlabDTO - Object that contains the `unitsToGetDiscount`
      *                            and `discountAmount`
      * @param slabId              - The id of the discount slab to be updated
-     * @return an Updated DiscountSlab
+     * @return an Updated {@link DiscountSlab}
      */
     public ResponseEntity<DiscountSlab> updateDiscountSlab(DiscountSlabDTO itemDiscountSlabDTO, Long slabId) {
         DiscountSlab discountSlab = this.discountSlabRepository.findById(slabId).get();

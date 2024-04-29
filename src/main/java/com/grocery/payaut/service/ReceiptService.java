@@ -16,7 +16,6 @@ import com.grocery.payaut.model.DiscountSlab;
 import com.grocery.payaut.model.Item;
 import com.grocery.payaut.repository.IItemRepository;
 import com.grocery.payaut.util.ItemUtils;
-import com.grocery.payaut.util.MathUtils;
 
 @Service
 public class ReceiptService {
@@ -25,32 +24,22 @@ public class ReceiptService {
     private IItemRepository itemRepository;
 
     public ResponseEntity<List<ReceiptItemDTO>> postReceiptCreation(ReceiptCreationDTO receiptCreationDTO) {
-        final List<ReceiptItemDTO> receiptData = checkoutCart(receiptCreationDTO).getBody().stream()
-                .map(checkoutDTO -> {
-                    final ReceiptItemDTO receiptDTO = new ReceiptItemDTO();
-                    receiptDTO.setUnit(checkoutDTO.getItem().getUnit());
-                    receiptDTO.setQuantity(checkoutDTO.getQuantity());
-                    final double finalPrice = MathUtils
-                            .roundTwoDecimals(checkoutDTO.getTotalPrice() - checkoutDTO.getTotalDiscount());
-                    receiptDTO
-                            .setFinalPrice(finalPrice);
-                    receiptDTO.setBasePrice(checkoutDTO.getItem().getPrice());
-                    receiptDTO.setItemName(ItemUtils.resolveItemName(checkoutDTO.getItem()));
-                    receiptDTO.setTotalPrice(checkoutDTO.getTotalPrice());
-                    final double totalDiscount = MathUtils.roundTwoDecimals(checkoutDTO.getTotalDiscount());
-                    receiptDTO.setTotalDiscount(totalDiscount);
-                    return receiptDTO;
-                }).toList();
-
-        return ResponseEntity.ok(receiptData);
+        final List<CheckoutDTO> listCheckout = checkoutReceipt(receiptCreationDTO).getBody();
+        if (listCheckout != null) {
+            final List<ReceiptItemDTO> receiptData = listCheckout.stream()
+                    .map(checkoutDTO -> {
+                        final ReceiptItemDTO receiptDTO = new ReceiptItemDTO(checkoutDTO);
+                        return receiptDTO;
+                    }).toList();
+            return ResponseEntity.ok(receiptData);
+        }
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while creating the receipt");
     }
 
-    // TODO: make it private and test it with the postReceiptCreation method
-    public ResponseEntity<List<CheckoutDTO>> checkoutCart(ReceiptCreationDTO receiptCreationDTO) {
+    private ResponseEntity<List<CheckoutDTO>> checkoutReceipt(ReceiptCreationDTO receiptCreationDTO) {
         final List<CheckoutDTO> cartItems = receiptCreationDTO.getReceiptItems().stream()
                 .map(receiptCreationItemDTO -> {
-                    final Long itemId = receiptCreationItemDTO.getItemId();
-                    final Item possibleItem = itemRepository.findById(itemId).get();
+                    final Item possibleItem = this.itemRepository.findById(receiptCreationItemDTO.getItemId()).get();
                     final Discount discount = possibleItem.getDiscount();
                     final double price = possibleItem.getPrice();
                     final int quantity = receiptCreationItemDTO.getQuantity();
@@ -90,31 +79,33 @@ public class ReceiptService {
 
     private CheckoutDTO applyBreadRule(ReceiptItemDTO receiptItemDTO, Item item, double price, int quantity) {
         final long breadAge = ItemUtils.resolveBreadAge(item);
+        int quantityToGive = 0;
 
         if (breadAge > 6) {
             throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Bread is too old to be sold! 🤮");
         }
         if (breadAge >= 3) {
-            receiptItemDTO.setQuantity(quantity + 1);
-            receiptItemDTO.setTotalDiscount(price * 1);
-            receiptItemDTO.setTotalPrice(price * (quantity + 1));
+            quantityToGive = 1;
         }
         if (breadAge == 6) {
-            receiptItemDTO.setQuantity(quantity + 2);
-            receiptItemDTO.setTotalDiscount(price * 2);
-            receiptItemDTO.setTotalPrice(price * (quantity + 2));
+            quantityToGive = 2;
         }
+        final int finalQuantity = quantity + quantityToGive;
+        receiptItemDTO.setQuantity(finalQuantity);
+        receiptItemDTO.setTotalDiscount(price * quantityToGive);
+        receiptItemDTO.setTotalPrice(price * finalQuantity);
         final CheckoutDTO checkoutDTO = new CheckoutDTO(item, receiptItemDTO);
         return checkoutDTO;
     }
 
     private CheckoutDTO applyVegetableRule(ReceiptItemDTO cartItem, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
-        final double finalValue = quantity * price
-                - (quantity * price * discountSlab.getDiscountAmount() / 100);
+        final double finalPrice = quantity * price;
+        final double discountPercent = discountSlab.getDiscountAmount() / 100;
+        final double finalPriceWithDiscount = finalPrice - (finalPrice * discountPercent);
 
-        cartItem.setTotalPrice(quantity * price);
-        cartItem.setTotalDiscount((price * quantity) - finalValue);
+        cartItem.setTotalPrice(finalPrice);
+        cartItem.setTotalDiscount(finalPrice - finalPriceWithDiscount);
         final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
         return checkoutDTO;
     }
@@ -122,7 +113,7 @@ public class ReceiptService {
     private CheckoutDTO applyConstantSlab(ReceiptItemDTO cartItem, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
 
-        final double finalDiscount = (int) Math.floor(quantity /
+        final double finalDiscount = Math.floor(quantity /
                 discountSlab.getUnitsToGetDiscount())
                 * discountSlab.getDiscountAmount();
         cartItem.setTotalPrice(price * quantity);
