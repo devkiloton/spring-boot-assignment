@@ -14,5 +14,5 @@ import lombok.Setter;
 @Validated
 public class DiscountSlabDTO {
     private Integer unitsToGetDiscount;
-    private Integer discountAmount;
+    private Double discountAmount;
 }

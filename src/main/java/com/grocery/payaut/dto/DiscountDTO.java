@@ -22,5 +22,4 @@ public class DiscountDTO {
     private Long discountId;
     private DiscountUnits discountUnit;
     private Boolean isConstantSlab;
-    private List<DiscountSlabDTO> discountSlabs;
 }

@@ -2,7 +2,6 @@ package com.grocery.payaut.dto;
 
 import com.grocery.payaut.enumerator.ItemTypes;
 import com.grocery.payaut.enumerator.MeasurementUnits;
-import com.grocery.payaut.model.Discount;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,5 +22,5 @@ public class ItemCreationDTO {
     private MeasurementUnits unit;
     @NotNull
     private String name;
-    private Discount discount;
+    private DiscountCreationDTO discount;
 }
