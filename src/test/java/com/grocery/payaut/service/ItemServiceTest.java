@@ -33,6 +33,7 @@ public class ItemServiceTest {
 
     @BeforeEach
     public void setUp() {
+        // Item
         this.itemRecord.setDiscount(null);
         this.itemRecord.setName("nullS");
         this.itemRecord.setPrice(0.5);
