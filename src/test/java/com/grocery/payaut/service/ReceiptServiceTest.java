@@ -45,7 +45,7 @@ public class ReceiptServiceTest {
     public void setUp() {
         // Discount
         Discount discount = new Discount();
-        discount.setDiscountId(1L);
+        discount.setId(1L);
         discount.setIsConstantSlab(false);
 
         // Discount Slab
@@ -63,7 +63,7 @@ public class ReceiptServiceTest {
         this.itemRecord.setType(ItemTypes.BREADS);
         this.itemRecord.setUnit(MeasurementUnits.PIECE);
         this.itemRecord.setCreatedAt(LocalDateTime.now().minusDays(7));
-        this.itemRecord.setItemId(3L);
+        this.itemRecord.setId(3L);
 
         // Receipt Item
         final ReceiptItemCreationDTO receiptItemCreationDTO = new ReceiptItemCreationDTO();
@@ -75,7 +75,7 @@ public class ReceiptServiceTest {
     @Test
     public void given_bread_created_7d_ago_when_postReceiptCreation_should_throw() {
 
-        doReturn((Optional.of(this.itemRecord))).when(this.itemRepository).findById(this.itemRecord.getItemId());
+        doReturn((Optional.of(this.itemRecord))).when(this.itemRepository).findById(this.itemRecord.getId());
 
         final ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> this.receiptService.postReceiptCreation(this.ReceiptCreationDTORecord));
@@ -88,7 +88,7 @@ public class ReceiptServiceTest {
     public void given_bread_created_3d_ago_when_postReceiptCreation_should_not_throw() {
 
         this.itemRecord.setCreatedAt(LocalDateTime.now().minusDays(3));
-        doReturn((Optional.of(this.itemRecord))).when(this.itemRepository).findById(this.itemRecord.getItemId());
+        doReturn((Optional.of(this.itemRecord))).when(this.itemRepository).findById(this.itemRecord.getId());
 
         assertDoesNotThrow(() -> this.receiptService.postReceiptCreation(this.ReceiptCreationDTORecord));
     }
