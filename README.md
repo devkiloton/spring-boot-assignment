@@ -1,4 +1,4 @@
-# Payaut REST service
+# Payaut REST service (100% Java)
 
 ```mermaid
 erDiagram
@@ -31,6 +31,9 @@ erDiagram
 All the endpoints and possible requests/exceptions are documented in Postman(and many of them in Javadoc). The requisitions are with fulfilled bodies and ready to be tested locally
 
 <a href="https://documenter.getpostman.com/view/16889380/2sA3BuWUZa#b0fa6b13-1953-4e33-9cdd-9451b3ead934" target="_blank"><img src="https://run.pstmn.io/button.svg" alt="Run in Postman"></a>
+
+## How it works?
+<img width="1423" alt="Capture d’écran 2024-04-29 à 09 17 59" src="https://github.com/devkiloton/Payaut-assignment/assets/78966160/e958274a-b02b-4907-a899-ead349d73908">
 
 ## The DB
 I have used H2 in memory db (100% Java), so if you want to take a look in the tables access `/api/v1/h2` and you will have access to the console (credentials in the application.properties)
