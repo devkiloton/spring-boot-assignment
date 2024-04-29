@@ -1,4 +1,4 @@
-# Payaut REST service (100% Java)
+# REST service (100% Java)
 
 ```mermaid
 erDiagram
