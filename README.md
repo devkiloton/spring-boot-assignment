@@ -1,6 +1,5 @@
 # Payaut REST service
 
-
 ```mermaid
 erDiagram
     item {
@@ -24,14 +23,23 @@ erDiagram
         bigint units_to_get_discount
         bigint discount_id FK
     }
-    
-   
 
     discount ||--|{ discount_slab : discount_id
     discount |o --|| item : discount_id
 ```
+## Documentation
+All the endpoints and possible requests/exceptions are documented in Postman(and many of them in Javadoc). The requisitions are with fulfilled bodies and ready to be tested locally
+
+<a href="https://documenter.getpostman.com/view/16889380/2sA3BuWUZa#b0fa6b13-1953-4e33-9cdd-9451b3ead934" target="_blank"><img src="https://run.pstmn.io/button.svg" alt="Run in Postman"></a>
+
+## The DB
+I have used H2 in memory db (100% Java), so if you want to take a look in the tables access `/api/v1/h2` and you will have access to the console (credentials in the application.properties)
+
+https://github.com/devkiloton/Payaut-assignment/assets/78966160/3e8e9065-042d-4fe1-8e80-35f230b6c907
 
 
+## Item's cheat sheet
+Use these identifiers (default data) to interact with the API
 | ID   | CREATED_AT          | ITEM_NAME    | ITEM_PRICE   | ITEM_TYPE   | ITEM_UNIT   | DISCOUNT_ID   |
 |------|---------------------|--------------|--------------|-------------|-------------|---------------|
 | 1    | 2024-04-24 10:00:00 | Vegetables   | 0.01         | VEGETABLES  | GRAM        | 1             |
