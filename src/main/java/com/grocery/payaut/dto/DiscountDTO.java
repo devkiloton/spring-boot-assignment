@@ -1,9 +1,5 @@
 package com.grocery.payaut.dto;
 
-import java.util.List;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.grocery.payaut.enumerator.DiscountUnits;
 
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +12,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Validated
 public class DiscountDTO {
     @NotNull
     private Long discountId;

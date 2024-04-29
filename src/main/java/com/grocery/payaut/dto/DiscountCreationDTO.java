@@ -16,7 +16,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Validated
 public class DiscountCreationDTO {
     @NotNull
     private Long itemId;
