@@ -40,7 +40,6 @@ I have used H2 in memory db (100% Java), so if you want to take a look in the ta
 
 https://github.com/devkiloton/Payaut-assignment/assets/78966160/3e8e9065-042d-4fe1-8e80-35f230b6c907
 
-
 ## Item's cheat sheet
 Use these identifiers (default data) to interact with the API
 | ID   | CREATED_AT          | ITEM_NAME    | ITEM_PRICE   | ITEM_TYPE   | ITEM_UNIT   | DISCOUNT_ID   |
@@ -50,4 +49,11 @@ Use these identifiers (default data) to interact with the API
 | 3    | 2024-04-25 11:00:00 | Bread        | 1.0          | BREADS      | PIECE       | 3             |
 | 4    | 2024-04-24 11:00:00 | Belgium Beer | 0.75         | BEERS       | PIECE       | 4             |
 | 5    | 2024-04-24 11:00:00 | German Beer  | 1.0          | BEERS       | PIECE       | 5             |
+
+### Other projects you might like
+[Laravel ambassador](https://github.com/devkiloton/laravel-ambassador)
+A monolith built with PHP, Docker, MySQL and Redis
+
+[Main Chainz API](https://github.com/devkiloton/main-chainz-restful-api)
+An open source Nodejs api built with MySQL, Redis, and many other technologies
 
