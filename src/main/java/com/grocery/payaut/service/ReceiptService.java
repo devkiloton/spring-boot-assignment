@@ -50,7 +50,7 @@ public class ReceiptService {
      * @return {@link List} of {@link CheckoutDTO}
      */
     private ResponseEntity<List<CheckoutDTO>> checkoutReceipt(ReceiptCreationDTO receiptCreationDTO) {
-        final List<CheckoutDTO> cartItems = receiptCreationDTO.getReceiptItems().stream()
+        final List<CheckoutDTO> checkoutItems = receiptCreationDTO.getReceiptItems().stream()
                 .map(receiptCreationItemDTO -> {
                     final Item possibleItem = this.itemRepository.findById(receiptCreationItemDTO.getItemId()).get();
                     final Discount discount = possibleItem.getDiscount();
@@ -97,7 +97,7 @@ public class ReceiptService {
                             return checkoutDTO;
                     }
                 }).toList();
-        return ResponseEntity.ok(cartItems);
+        return ResponseEntity.ok(checkoutItems);
     }
 
     private CheckoutDTO applyBreadRule(ReceiptItemDTO receiptItemDTO, Item item, double price, int quantity) {
@@ -121,27 +121,27 @@ public class ReceiptService {
         return checkoutDTO;
     }
 
-    private CheckoutDTO applyVegetableRule(ReceiptItemDTO cartItem, Item item, double price, int quantity,
+    private CheckoutDTO applyVegetableRule(ReceiptItemDTO receiptItemDTO, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
         final double finalPrice = quantity * price;
         final double discountPercent = discountSlab.getDiscountAmount() / 100;
         final double finalPriceWithDiscount = finalPrice - (finalPrice * discountPercent);
 
-        cartItem.setTotalPrice(finalPrice);
-        cartItem.setTotalDiscount(finalPrice - finalPriceWithDiscount);
-        final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
+        receiptItemDTO.setTotalPrice(finalPrice);
+        receiptItemDTO.setTotalDiscount(finalPrice - finalPriceWithDiscount);
+        final CheckoutDTO checkoutDTO = new CheckoutDTO(item, receiptItemDTO);
         return checkoutDTO;
     }
 
-    private CheckoutDTO applyConstantSlab(ReceiptItemDTO cartItem, Item item, double price, int quantity,
+    private CheckoutDTO applyConstantSlab(ReceiptItemDTO receiptItemDTO, Item item, double price, int quantity,
             DiscountSlab discountSlab) {
 
         final double finalDiscount = Math.floor(quantity /
                 discountSlab.getUnitsToGetDiscount())
                 * discountSlab.getDiscountAmount();
-        cartItem.setTotalPrice(price * quantity);
-        cartItem.setTotalDiscount(finalDiscount);
-        final CheckoutDTO checkoutDTO = new CheckoutDTO(item, cartItem);
+        receiptItemDTO.setTotalPrice(price * quantity);
+        receiptItemDTO.setTotalDiscount(finalDiscount);
+        final CheckoutDTO checkoutDTO = new CheckoutDTO(item, receiptItemDTO);
         return checkoutDTO;
     }
 
