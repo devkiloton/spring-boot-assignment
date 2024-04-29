@@ -81,7 +81,6 @@ public class ReceiptServiceTest {
                 () -> this.receiptService.postReceiptCreation(this.ReceiptCreationDTORecord));
 
         assertEquals(exception.getMessage(), "412 PRECONDITION_FAILED \"Bread is too old to be sold! 🤮\"");
-
     }
 
     @Test
