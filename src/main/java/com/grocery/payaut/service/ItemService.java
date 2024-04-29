@@ -1,15 +1,16 @@
 package com.grocery.payaut.service;
 
-import java.util.Optional;
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.grocery.payaut.dto.ItemDTO;
+import com.grocery.payaut.mapper.ICustomMappers;
+import com.grocery.payaut.dto.DiscountCreationDTO;
 import com.grocery.payaut.dto.DiscountDTO;
 import com.grocery.payaut.dto.DiscountSlabDTO;
+import com.grocery.payaut.dto.ItemCreationDTO;
 import com.grocery.payaut.model.Discount;
 import com.grocery.payaut.model.DiscountSlab;
 import com.grocery.payaut.model.Item;
@@ -29,56 +30,87 @@ public class ItemService {
     @Autowired
     private IDiscountSlabRepository discountSlabRepository;
 
+    @Autowired
+    private ICustomMappers mappers;
+
     public ResponseEntity<List<Item>> getAllItems() {
-        return ResponseEntity.ok(itemRepository.findAll());
+        return ResponseEntity.ok(this.itemRepository.findAll());
     }
 
-    public ResponseEntity<Item> upsertItem(ItemDTO itemDTO) {
-        if (itemDTO.getItemId() != null) {
-            Optional<Item> itemOptional = itemRepository.findById(itemDTO.getItemId());
-            Item existingItem = itemOptional.get();
-            existingItem.setType(itemDTO.getType());
-            existingItem.setUnit(itemDTO.getUnit());
-            existingItem.setPrice(itemDTO.getPrice());
-            existingItem.setDiscount(itemDTO.getDiscount());
-            Item savedItem = itemRepository.save(existingItem);
-            return ResponseEntity.ok(savedItem);
-        }
-
-        Item newItem = new Item();
-        newItem.setType(itemDTO.getType());
-        newItem.setUnit(itemDTO.getUnit());
-        newItem.setPrice(itemDTO.getPrice());
-        newItem.setDiscount(itemDTO.getDiscount());
-        Item savedItem = itemRepository.save(newItem);
+    public ResponseEntity<Item> updateItem(ItemDTO itemDTO) {
+        Item item = this.itemRepository.findById(itemDTO.getItemId()).get();
+        this.mappers.dtoToItem(itemDTO, item);
+        Item savedItem = this.itemRepository.save(item);
         return ResponseEntity.ok(savedItem);
     }
 
-    public ResponseEntity<Discount> upsertItemDiscount(DiscountDTO itemdDiscountDTO) {
-        if (itemdDiscountDTO.getDiscountId() != null) {
-            Optional<Discount> discountOptional = discountRepository.findById(itemdDiscountDTO.getDiscountId());
-            Discount existingDiscount = discountOptional.get();
-            existingDiscount.setDiscountSlabs(itemdDiscountDTO.getDiscountSlabs());
-            existingDiscount.setDiscountUnit(itemdDiscountDTO.getDiscountUnit());
-            existingDiscount.setIsConstantSlab(itemdDiscountDTO.getIsConstantSlab());
-            Discount savedDiscount = discountRepository.save(existingDiscount);
-            return ResponseEntity.ok(savedDiscount);
-        }
-        Discount newDiscount = new Discount();
-        newDiscount.setDiscountSlabs(itemdDiscountDTO.getDiscountSlabs());
-        newDiscount.setDiscountUnit(itemdDiscountDTO.getDiscountUnit());
-        newDiscount.setIsConstantSlab(itemdDiscountDTO.getIsConstantSlab());
-        Discount savedDiscount = discountRepository.save(newDiscount);
+    /**
+     * Creates a new item to the database, so users can buy it
+     * 
+     * @param itemCreationDTO - Object that contains the item's information
+     */
+    public ResponseEntity<Item> createItem(ItemCreationDTO itemCreationDTO) {
+        Item newItem = new Item();
+        final DiscountCreationDTO discountCreatinoDTO = itemCreationDTO.getDiscount();
+
+        this.mappers.dtoToItemCreation(itemCreationDTO, newItem);
+        // Discount should be null since it's a relationship, otherwise there will be an
+        // error
+        newItem.setDiscount(null);
+        Item savedItem = this.itemRepository.save(newItem);
+
+        // Save discount
+        discountCreatinoDTO.setItemId(savedItem.getItemId());
+        this.createItemDiscount(discountCreatinoDTO);
+        return ResponseEntity.ok(savedItem);
+    }
+
+    public ResponseEntity<Discount> updateItemDiscount(DiscountDTO itemdDiscountDTO) {
+        Discount discount = this.discountRepository.findById(itemdDiscountDTO.getDiscountId()).get();
+
+        this.mappers.dtoToDiscount(itemdDiscountDTO, discount);
+        Discount savedDiscount = this.discountRepository.save(discount);
         return ResponseEntity.ok(savedDiscount);
     }
 
-    public ResponseEntity<DiscountSlab> updateDiscountSlab(DiscountSlabDTO itemDiscountSlabDTO) {
-        Optional<DiscountSlab> discountSlabOptional = discountSlabRepository
-                .findById(itemDiscountSlabDTO.getDiscountSlabId());
-        DiscountSlab existingDiscountSlab = discountSlabOptional.get();
-        existingDiscountSlab.setUnitsToGetDiscount(itemDiscountSlabDTO.getUnitsToGetDiscount());
-        existingDiscountSlab.setDiscountAmount(itemDiscountSlabDTO.getDiscountAmount());
-        DiscountSlab savedDiscountSlab = discountSlabRepository.save(existingDiscountSlab);
+    public ResponseEntity<Discount> createItemDiscount(DiscountCreationDTO discountCreationDTO) {
+        Discount newDiscount = new Discount();
+
+        // Mapping slabs
+        List<DiscountSlab> discountSlabs = discountCreationDTO.getDiscountSlabs().stream().map(slab -> {
+            DiscountSlab discountSlab = new DiscountSlab();
+            discountSlab.setDiscount(newDiscount);
+            discountSlab.setUnitsToGetDiscount(slab.getUnitsToGetDiscount());
+            discountSlab.setDiscountAmount(slab.getDiscountAmount());
+            return discountSlab;
+        }).toList();
+
+        this.mappers.dtoToDiscountCreation(discountCreationDTO, newDiscount);
+        newDiscount.setDiscountSlabs(discountSlabs);
+        Discount savedDiscount = this.discountRepository.save(newDiscount);
+
+        // Updating item with discount because of the relationship and to have cascade
+        this.itemRepository.findById(discountCreationDTO.getItemId()).ifPresent(item -> {
+            item.setDiscount(savedDiscount);
+            this.itemRepository.save(item);
+        });
+        return ResponseEntity.ok(savedDiscount);
+    }
+
+    /**
+     * A discount slab refers to a condition.
+     * e.g. Discount X is applied when the user buys Y units
+     * 
+     * @param itemDiscountSlabDTO - Object that contains the `unitsToGetDiscount`
+     *                            and `discountAmount`
+     * @param slabId              - The id of the discount slab to be updated
+     * @return an Updated DiscountSlab
+     */
+    public ResponseEntity<DiscountSlab> updateDiscountSlab(DiscountSlabDTO itemDiscountSlabDTO, Long slabId) {
+        DiscountSlab discountSlab = this.discountSlabRepository.findById(slabId).get();
+
+        this.mappers.dtoToDiscountSlab(itemDiscountSlabDTO, discountSlab);
+        DiscountSlab savedDiscountSlab = this.discountSlabRepository.save(discountSlab);
         return ResponseEntity.ok(savedDiscountSlab);
     }
 }
