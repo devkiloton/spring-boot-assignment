@@ -22,7 +22,7 @@ import lombok.Setter;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long itemId;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type")

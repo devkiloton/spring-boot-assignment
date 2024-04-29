@@ -31,7 +31,7 @@ import lombok.Setter;
 public class DiscountSlab {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long discountSlabId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")

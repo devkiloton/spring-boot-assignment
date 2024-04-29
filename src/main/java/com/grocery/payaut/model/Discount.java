@@ -20,7 +20,7 @@ import lombok.Setter;
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long discountId;
+    private Long id;
 
     /**
      * Constant slab means that for every X units, the discount will be Y, where X
@@ -40,7 +40,7 @@ public class Discount {
      * A discount slab refers to a condition.
      * e.g. Discount X is applied when the user buys Y units
      */
-    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "discount", orphanRemoval = true)
     private List<DiscountSlab> discountSlabs;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "discount")
