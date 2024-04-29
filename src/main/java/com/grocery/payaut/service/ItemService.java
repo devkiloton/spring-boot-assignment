@@ -63,7 +63,7 @@ public class ItemService {
      */
     public ResponseEntity<Item> createItem(ItemCreationDTO itemCreationDTO) {
         Item newItem = new Item();
-        final DiscountCreationDTO discountCreatinoDTO = itemCreationDTO.getDiscount();
+        final DiscountCreationDTO discountCreationDTO = itemCreationDTO.getDiscount();
 
         this.mappers.dtoToItemCreation(itemCreationDTO, newItem);
         // Discount should be null since it's a relationship, otherwise there will be an
@@ -72,8 +72,10 @@ public class ItemService {
         Item savedItem = this.itemRepository.save(newItem);
 
         // Save discount
-        discountCreatinoDTO.setItemId(savedItem.getItemId());
-        this.createItemDiscount(discountCreatinoDTO);
+        if (discountCreationDTO != null) {
+            discountCreationDTO.setItemId(savedItem.getItemId());
+            this.createItemDiscount(discountCreationDTO);
+        }
         return ResponseEntity.ok(savedItem);
     }
 
