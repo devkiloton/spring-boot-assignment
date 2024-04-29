@@ -23,6 +23,13 @@ public class ReceiptService {
     @Autowired
     private IItemRepository itemRepository;
 
+    /**
+     * Creates a receipt based on the items that the user wants to buy
+     * 
+     * @param receiptCreationDTO - Object that contains the items that the user
+     *                           wants to buy and the quantity
+     * @return a {@link List} of {@link ReceiptItemDTO}
+     */
     public ResponseEntity<List<ReceiptItemDTO>> postReceiptCreation(ReceiptCreationDTO receiptCreationDTO) {
         final List<CheckoutDTO> listCheckout = checkoutReceipt(receiptCreationDTO).getBody();
         if (listCheckout != null) {
@@ -36,6 +43,11 @@ public class ReceiptService {
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while creating the receipt");
     }
 
+    /**
+     * Internal method handling business rules
+     * 
+     * @return {@link List} of {@link CheckoutDTO}
+     */
     private ResponseEntity<List<CheckoutDTO>> checkoutReceipt(ReceiptCreationDTO receiptCreationDTO) {
         final List<CheckoutDTO> cartItems = receiptCreationDTO.getReceiptItems().stream()
                 .map(receiptCreationItemDTO -> {
