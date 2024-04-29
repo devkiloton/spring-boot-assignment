@@ -16,6 +16,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * A discount slab refers to a condition.
+ * e.g. Discount X (<code>unitsToGetDiscount</code> property) is applied when
+ * the user buys Y(<code>discountAmount</code> property) units. An {@link Item}
+ * can have multiple {@link DiscountSlab}.
+ */
 @Entity
 @Table(name = "discount_slab")
 @Setter
@@ -26,12 +32,15 @@ public class DiscountSlab {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long discountSlabId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
     @JsonIgnore
     private Discount discount;
+
     @Column(name = "units_to_get_discount")
-    private int unitsToGetDiscount;
+    private Integer unitsToGetDiscount;
+
     @Column(name = "discount_amount")
-    private int discountAmount;
+    private Double discountAmount;
 }
