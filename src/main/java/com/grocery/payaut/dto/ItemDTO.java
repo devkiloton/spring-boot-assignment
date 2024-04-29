@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemDTO {
     @NotNull
-    private Long itemId;
+    private Long id;
     private ItemTypes type;
     private String name;
     private Double price;

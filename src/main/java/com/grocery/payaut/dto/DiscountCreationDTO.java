@@ -3,6 +3,7 @@ package com.grocery.payaut.dto;
 import java.util.List;
 
 import com.grocery.payaut.enumerator.DiscountUnits;
+import com.grocery.payaut.model.DiscountSlab;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,14 +17,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DiscountCreationDTO {
     @NotNull
-    private Long itemId;
-    @NotNull
+    private Long id;
 
+    @NotNull
     private DiscountUnits discountUnit;
-    @NotNull
 
+    @NotNull
     private Boolean isConstantSlab;
-    @NotNull
 
+    @NotNull
     private List<DiscountSlabDTO> discountSlabs;
 }
