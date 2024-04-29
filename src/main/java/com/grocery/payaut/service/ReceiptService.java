@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.grocery.payaut.dto.ReceiptCreationDTO;
 import com.grocery.payaut.dto.CheckoutDTO;
 import com.grocery.payaut.dto.ReceiptItemDTO;
+import com.grocery.payaut.enumerator.ItemTypes;
 import com.grocery.payaut.model.Discount;
 import com.grocery.payaut.model.DiscountSlab;
 import com.grocery.payaut.model.Item;
@@ -60,19 +61,24 @@ public class ReceiptService {
                     receiptItemDTO.setQuantity(quantity);
                     receiptItemDTO.setTotalPrice(price * quantity);
                     receiptItemDTO.setTotalDiscount(0.0);
-                    if (discount == null) {
+
+                    /*
+                     * If there's no discount or discount slab. We just return the item with the
+                     * total price and quantity
+                     * 
+                     * Since breads have a special rule because of many factors, we need to check if
+                     * the item is a bread since it doesn't have a discount slab.
+                     */
+                    if (discount == null
+                            || (discount.getDiscountSlabs().isEmpty() && possibleItem.getType() != ItemTypes.BREADS)) {
                         final CheckoutDTO checkoutDTO = new CheckoutDTO(possibleItem, receiptItemDTO);
                         return checkoutDTO;
                     }
 
+                    // Get the discount slab that applies to the quantity
                     final DiscountSlab discountSlab = discount.getDiscountSlabs().stream()
                             .filter(slab -> slab.getUnitsToGetDiscount() <= quantity).reduce((first, second) -> second)
                             .orElse(null);
-
-                    if (discountSlab == null) {
-                        throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED,
-                                "No discount slab found for the quantity");
-                    }
 
                     if (discount.getIsConstantSlab()) {
                         return applyConstantSlab(receiptItemDTO, possibleItem, price, quantity, discountSlab);
