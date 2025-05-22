@@ -1,4 +1,4 @@
-# REST service (100% Java)
+# REST service spring boot
 
 ```mermaid
 erDiagram
